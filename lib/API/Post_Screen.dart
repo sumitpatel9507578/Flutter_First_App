@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'rest_api_helper.dart';
 import 'Rest_api.dart';
 
@@ -12,20 +13,24 @@ class PostScreen extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surfaceVariant.withOpacity(0.3),
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: theme.colorScheme.primary,
-        title: const Text(
+        title: Text(
           "User Directory",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 22,
+          ),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.filter_list_rounded),
           )
         ],
       ),
@@ -34,34 +39,59 @@ class PostScreen extends StatelessWidget {
         future: apiHelper.fetchProducts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
             return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, size: 60, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text("Error: ${snapshot.error}"),
-                ],
+              child: CircularProgressIndicator(
+                color: theme.colorScheme.primary,
+                strokeWidth: 3,
               ),
             );
+          } else if (snapshot.hasError) {
+            return _buildErrorState(snapshot.error.toString());
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-            final data = snapshot.data!;
             return ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              itemCount: data.length,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              physics: const BouncingScrollPhysics(),
+              itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final user = data[index];
-                return UserProfileCard(user: user);
+                return UserProfileCard(user: snapshot.data![index]);
               },
             );
           } else {
-            return const Center(
-              child: Text("No users found"),
-            );
+            return const Center(child: Text("No users found"));
           }
         },
+      ),
+    );
+  }
+
+  Widget _buildErrorState(String error) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.red[50],
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.cloud_off_rounded, size: 64, color: Colors.red[400]),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              "Something went wrong",
+              style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              error,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.poppins(color: Colors.grey[600]),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -69,35 +99,58 @@ class PostScreen extends StatelessWidget {
   Widget _buildDrawer(BuildContext context) {
     final theme = Theme.of(context);
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      backgroundColor: Colors.white,
+      child: Column(
         children: [
           UserAccountsDrawerHeader(
-            decoration: BoxDecoration(color: theme.colorScheme.primary),
-            currentAccountPicture: const CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Icon(Icons.person, size: 40),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [theme.colorScheme.primary, theme.colorScheme.secondary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-            accountName: const Text("Sumit Patel"),
-            accountEmail: const Text("sumit@gmail.com"),
+            currentAccountPicture: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: const CircleAvatar(
+                backgroundColor: Color(0xFFF1F1F1),
+                child: Icon(Icons.person, size: 45, color: Colors.grey),
+              ),
+            ),
+            accountName: Text(
+              "Sumit Patel",
+              style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            accountEmail: Text(
+              "sumit@gmail.com",
+              style: GoogleFonts.poppins(color: Colors.white.withOpacity(0.9)),
+            ),
           ),
-          ListTile(
-            leading: const Icon(CupertinoIcons.home),
-            title: const Text("Home"),
-            onTap: () => Navigator.pop(context),
-          ),
-          ListTile(
-            leading: const Icon(CupertinoIcons.person_2),
-            title: const Text("Users"),
-            onTap: () => Navigator.pop(context),
-          ),
-          ListTile(
-            leading: const Icon(CupertinoIcons.settings),
-            title: const Text("Settings"),
-            onTap: () => Navigator.pop(context),
-          ),
+          _drawerItem(CupertinoIcons.home, "Dashboard", () => Navigator.pop(context)),
+          _drawerItem(CupertinoIcons.person_2, "Team Members", () => Navigator.pop(context)),
+          _drawerItem(CupertinoIcons.settings, "Preferences", () => Navigator.pop(context)),
+          const Spacer(),
+          const Divider(),
+          _drawerItem(Icons.logout_rounded, "Logout", () => Navigator.pop(context), color: Colors.red),
+          const SizedBox(height: 20),
         ],
       ),
+    );
+  }
+
+  Widget _drawerItem(IconData icon, String title, VoidCallback onTap, {Color? color}) {
+    return ListTile(
+      leading: Icon(icon, color: color ?? Colors.grey[700], size: 22),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: color ?? Colors.black87,
+        ),
+      ),
+      onTap: onTap,
     );
   }
 }
@@ -112,49 +165,37 @@ class UserProfileCard extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: theme.colorScheme.primary.withOpacity(0.08),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Column(
         children: [
-          // Header Section with Gradient
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  theme.colorScheme.primary,
-                  theme.colorScheme.primary.withOpacity(0.8),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(20),
-              ),
-            ),
+          // Upper Profile Section
+          Padding(
+            padding: const EdgeInsets.all(20),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey[200],
-                    backgroundImage: NetworkImage(user.image),
+                Hero(
+                  tag: 'user-${user.id}',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: theme.colorScheme.primary.withOpacity(0.2), width: 3),
+                    ),
+                    child: CircleAvatar(
+                      radius: 38,
+                      backgroundColor: const Color(0xFFF1F1F1),
+                      backgroundImage: NetworkImage(user.image),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -164,84 +205,95 @@ class UserProfileCard extends StatelessWidget {
                     children: [
                       Text(
                         user.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                        style: GoogleFonts.poppins(
+                          fontSize: 19,
                           fontWeight: FontWeight.bold,
+                          color: Colors.black87,
                         ),
                       ),
-                      Text(
-                        user.role.toUpperCase(),
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
-                          fontSize: 12,
-                          letterSpacing: 1.2,
-                          fontWeight: FontWeight.w500,
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          user.role.toUpperCase(),
+                          style: GoogleFonts.poppins(
+                            color: theme.colorScheme.primary,
+                            fontSize: 10,
+                            letterSpacing: 1,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
                       Row(
                         children: [
-                          const Icon(Icons.cake, color: Colors.white70, size: 14),
-                          const SizedBox(width: 4),
-                          Text(
-                            "${user.age} Years",
-                            style: const TextStyle(color: Colors.white70, fontSize: 12),
-                          ),
-                          const SizedBox(width: 12),
-                          const Icon(Icons.bloodtype, color: Colors.white70, size: 14),
-                          const SizedBox(width: 4),
-                          Text(
-                            user.bloodGroup,
-                            style: const TextStyle(color: Colors.white70, fontSize: 12),
-                          ),
+                          _badge(Icons.cake_rounded, "${user.age} yrs", theme),
+                          const SizedBox(width: 8),
+                          _badge(Icons.bloodtype_rounded, user.bloodGroup, theme),
                         ],
                       ),
                     ],
                   ),
                 ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.more_vert_rounded, color: Colors.grey[400]),
+                ),
               ],
             ),
           ),
 
-          // Contact Info Section
+          // Divider
+          Divider(height: 1, color: Colors.grey[100]),
+
+          // Contact Details Section
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Column(
               children: [
-                _buildInfoRow(Icons.email_outlined, user.email, theme),
-                const Divider(height: 20),
-                _buildInfoRow(Icons.phone_android_outlined, user.phone, theme),
-                const Divider(height: 20),
-                _buildInfoRow(Icons.location_on_outlined, user.address, theme),
+                _buildContactRow(Icons.alternate_email_rounded, user.email, "Email"),
+                const SizedBox(height: 12),
+                _buildContactRow(Icons.phone_iphone_rounded, user.phone, "Mobile"),
+                const SizedBox(height: 12),
+                _buildContactRow(Icons.map_rounded, user.address, "Address", isAddress: true),
               ],
             ),
           ),
 
-          // Expandable Details
+          // Interactive Footer / Expansion
           Theme(
             data: theme.copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
               title: Text(
-                "View Technical Details",
-                style: TextStyle(
+                "Professional Background",
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
                   color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
                 ),
               ),
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: Column(
-                    children: [
-                      _buildDetailItem("University", user.university, Icons.school),
-                      _buildDetailItem("Company", user.company, Icons.business),
-                      _buildDetailItem("Banking", user.bank, Icons.account_balance),
-                      _buildDetailItem("Crypto", user.crypto, Icons.currency_bitcoin),
-                      _buildDetailItem("IP Address", user.ip, Icons.network_check),
-                      _buildDetailItem("MAC Address", user.macAddress, Icons.important_devices),
-                    ],
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF8F9FA),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildDetailItem(Icons.school_rounded, "Education", user.university),
+                        _buildDetailItem(Icons.work_rounded, "Company", user.company),
+                        _buildDetailItem(Icons.payments_rounded, "Bank Info", user.bank),
+                        _buildDetailItem(Icons.currency_bitcoin_rounded, "Crypto", user.crypto),
+                        _buildDetailItem(Icons.lan_rounded, "Network", "IP: ${user.ip}"),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -252,48 +304,70 @@ class UserProfileCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String value, ThemeData theme) {
+  Widget _badge(IconData icon, String text, ThemeData theme) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 20, color: theme.colorScheme.primary),
-        const SizedBox(width: 12),
+        Icon(icon, size: 14, color: Colors.grey[600]),
+        const SizedBox(width: 4),
+        Text(
+          text,
+          style: GoogleFonts.poppins(fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactRow(IconData icon, String value, String label, {bool isAddress = false}) {
+    return Row(
+      crossAxisAlignment: isAddress ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: const Color(0xFFF1F5F9),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, size: 18, color: const Color(0xFF64748B)),
+        ),
+        const SizedBox(width: 14),
         Expanded(
-          child: Text(
-            value,
-            style: const TextStyle(fontSize: 14, color: Colors.black87),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: GoogleFonts.poppins(fontSize: 10, color: Colors.grey[500], fontWeight: FontWeight.w500),
+              ),
+              Text(
+                value,
+                style: GoogleFonts.poppins(fontSize: 13, color: Colors.black87, fontWeight: FontWeight.w500),
+                maxLines: isAddress ? 2 : 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
       ],
     );
   }
 
-  Widget _buildDetailItem(String label, String value, IconData icon) {
+  Widget _buildDetailItem(IconData icon, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 18, color: Colors.grey[600]),
+          Icon(icon, size: 16, color: Colors.blueGrey[300]),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey[500],
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 13, color: Colors.black87),
-                ),
-              ],
+            child: RichText(
+              text: TextSpan(
+                style: GoogleFonts.poppins(fontSize: 12, color: Colors.black87),
+                children: [
+                  TextSpan(text: "$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(text: value, style: TextStyle(color: Colors.grey[700])),
+                ],
+              ),
             ),
           ),
         ],
