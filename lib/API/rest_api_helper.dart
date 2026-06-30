@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class RestApiHelper {
 
-  final String _baseUrl="https://fakestoreapi.com/products/";
+  final String _baseUrl="https://dummyjson.com/users";
 
   Future<List<productsModal>> fetchProducts()async{
     final response=await http.get(Uri.parse(_baseUrl),headers: {
@@ -13,10 +13,10 @@ class RestApiHelper {
     });
     print(response.body);
     if(response.statusCode==200){
-
-      List data=jsonDecode(response.body);
-      print(data.first);
-      return data.map((e)=>productsModal.fromJson(e)).toList();
+      Map<String, dynamic> data = jsonDecode(response.body);
+      return (data["users"] as List)
+          .map((e) => productsModal.fromJson(e))
+          .toList();
 
     }
     else{
