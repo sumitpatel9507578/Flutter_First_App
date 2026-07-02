@@ -58,71 +58,34 @@ class PostScreen extends StatelessWidget {
               child: Text("Errors: ${snapshot.error}"),
             );
           }
-          else if(snapshot.hasData){
-            final data=snapshot.data;
-            return ListView.builder(
-              itemCount: data!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                    padding: EdgeInsets.all(10),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 10,),
-                            height: 830,
-                            width: 350,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Image.network(data[index].image,fit: BoxFit.contain,width: double.infinity,height: 200,),
-                                Text("Name: ${data[index].name}"),
-                                Text("Age: ${data[index].age.toString()}"),
-                                Text("Email: ${data[index].email}"),
-                                Text("Phone: ${data[index].phone}"),
-                                Text("Height: ${data[index].height}"),
-                                Text("Weight: ${data[index].weight}"),
-                                Text("EyeColour: ${data[index].eyeColor}"),
-                                Text("Hair: ${data[index].hair}"),
-                                Text("IP: ${data[index].ip}"),
-                                Text("Address: ${data[index].address}"),
-                                Text("Coordinate: ${data[index].coordinates}"),
-                                Text("MakAddress: ${data[index].macAddress}"),
-                                Text("University: ${data[index].university}"),
-                                Text("Bank: ${data[index].bank}"),
-                                Text("Company: ${data[index].company}"),
-                                Text("Company Address: ${data[index].companyAddress}"),
-                                Text("Company Coordinate:${data[index].ssn}"),
-                                Text("EIN: ${data[index].ein}"),
-                                Text("SSN: ${data[index].ssn}"),
-                                Text("Agent: ${data[index].userAgent}"),
-                                Text("Crypto: ${data[index].crypto}"),
-                                Text("Role: ${data[index].role}"),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                );
 
-              },);
+          final users = snapshot.data!.data.users;
 
-          }
-          else{
-            return Center(
-              child: Text("My List is Empty"),
-            );
-          }
+          return ListView.builder(
+            itemCount: users.length,
+            itemBuilder: (context, index) {
+              final user = users[index];
 
-        },),
+              return Card(
+                margin: const EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Name: ${user.fullName}"),
+                      Text("Email: ${user.email ?? ""}"),
+                      Text("Phone: ${user.mobile}"),
+                      Text("Company: ${user.companyName ?? ""}"),
+                      Text("Role: ${user.roleName}"),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      )
     );
   }
 }
