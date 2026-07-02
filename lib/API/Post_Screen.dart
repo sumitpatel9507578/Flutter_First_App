@@ -45,17 +45,24 @@ class PostScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<productsModal>(
         future: apiHelper.fetchProducts(),
-        builder: (BuildContext context, AsyncSnapshot<List<productsModal>> snapshot) {
-          if(snapshot.connectionState==ConnectionState.waiting){
-            return Center(
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          else if(snapshot.hasError){
+
+          if (snapshot.hasError) {
             return Center(
-              child: Text("Errors: ${snapshot.error}"),
+              child: Text(snapshot.error.toString()),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return  Center(
+              child: Text("No Data"),
             );
           }
 
@@ -67,13 +74,13 @@ class PostScreen extends StatelessWidget {
               final user = users[index];
 
               return Card(
-                margin: const EdgeInsets.all(10),
+                margin:  EdgeInsets.all(10),
                 child: Padding(
-                  padding: const EdgeInsets.all(12),
+                  padding:  EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Name: ${user.fullName}"),
+                      Text("Name: ${user.fullName}",style: TextStyle(fontWeight: FontWeight.bold),),
                       Text("Email: ${user.email ?? ""}"),
                       Text("Phone: ${user.mobile}"),
                       Text("Company: ${user.companyName ?? ""}"),

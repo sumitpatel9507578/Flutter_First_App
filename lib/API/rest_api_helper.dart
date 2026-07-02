@@ -7,17 +7,20 @@ class RestApiHelper {
 
   final String _baseUrl="https://dummyjson.com/users";
 
-  Future<List<productsModal>> fetchProducts()async{
-    final response=await http.get(Uri.parse(_baseUrl),headers: {
-      "Content-Type":"application/json"
-    });
-    print(response.body);
-    if(response.statusCode==200){
-      Map<String, dynamic> data = jsonDecode(response.body);
-      return (data["users"] as List)
-          .map((e) => productsModal.fromJson(e))
-          .toList();
+  Future<productsModal> fetchProducts() async {
+    final response = await http.get(
+      Uri.parse(_baseUrl),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $_token",
+      },
+    );
 
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return productsModal.fromJson(data);
+    } else {
+      throw Exception("Failed to load users");
     }
     else{
       return [];
