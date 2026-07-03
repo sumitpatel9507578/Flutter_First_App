@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:second_app/API/MainRouting.dart';
 import 'DataBase/DataBase_Provider.dart';
 import 'DataBase/Database.dart';
 import 'DataBase/showDataScreen.dart';
 import 'API/Post_Screen.dart';
+import 'Post/add_PostScree.dart';
+import 'API/MainRouting.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
       ),
-      home: const PostScreen(),
+      home:  HomeScreen(),
     );
   }
 }
