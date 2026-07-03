@@ -13,98 +13,75 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        backgroundColor: Colors.blue,
-        title: const Text("Home Screen", style: TextStyle(color: Colors.white)),
+        backgroundColor: theme.colorScheme.primary,
+        title: const Text("Home Screen", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
       ),
       drawer: const Drawer(),
-      body: Align(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            Container(
-              height: 50,
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(3, 3),
-                  )
-                ],
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildHomeButton(
+                context, 
+                title: "All Employee", 
+                color: theme.colorScheme.primary,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PostScreen())),
               ),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const PostScreen()));
-                  },
-                  child: const Text("All Employee", style: TextStyle(color: Colors.white))),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              height: 50,
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(3, 3),
-                  )
-                ],
+              const SizedBox(height: 20),
+              _buildHomeButton(
+                context, 
+                title: "Single Employee", 
+                color: theme.colorScheme.secondary,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Singleemployee())),
               ),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const Singleemployee()));
-                  },
-                  child: const Text("Single Employee", style: TextStyle(color: Colors.white))),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              height: 50,
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(3, 3),
-                  )
-                ],
+              const SizedBox(height: 20),
+              _buildHomeButton(
+                context, 
+                title: "Add Employee", 
+                color: Colors.green.shade600,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee())),
               ),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee()));
-                  },
-                  child: const Text("Add Employee", style: TextStyle(color: Colors.white))),
-            ),
-          ],
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildHomeButton(BuildContext context, {required String title, required Color color, required VoidCallback onTap}) {
+    return Container(
+      height: 55,
+      width: double.infinity,
+      constraints: const BoxConstraints(maxWidth: 320),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            spreadRadius: 1,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        onPressed: onTap,
+        child: Text(title),
       ),
     );
   }
