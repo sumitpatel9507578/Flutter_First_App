@@ -13,14 +13,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    
     return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFC), // Light Slate Background
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        backgroundColor: theme.colorScheme.primary,
-        title: const Text("Home Screen", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+        backgroundColor: const Color(0xFF0F172A), // Deep Slate/Blue
+        title: const Text(
+          "Employee Portal", 
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1),
+        ),
       ),
       drawer: const Drawer(),
       body: Center(
@@ -32,22 +34,22 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildHomeButton(
                 context, 
                 title: "All Employee", 
-                color: theme.colorScheme.primary,
+                color: const Color(0xFF6366F1), // Indigo
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PostScreen())),
               ),
               const SizedBox(height: 20),
               _buildHomeButton(
                 context, 
                 title: "Single Employee", 
-                color: theme.colorScheme.secondary,
+                color: const Color(0xFFF59E0B), // Amber
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Singleemployee())),
               ),
               const SizedBox(height: 20),
               _buildHomeButton(
                 context, 
                 title: "Add Employee", 
-                color: Colors.green.shade600,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee())),
+                colors: [Color(0xFF10B981), Color(0xFF34D399)], // Emerald Gradient
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee())),
               ),
             ],
           ),
@@ -58,17 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHomeButton(BuildContext context, {required String title, required Color color, required VoidCallback onTap}) {
     return Container(
-      height: 55,
+      height: 58,
       width: double.infinity,
       constraints: const BoxConstraints(maxWidth: 320),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.3),
-            spreadRadius: 1,
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: color.withOpacity(0.25),
+            spreadRadius: 0,
+            blurRadius: 15,
+            offset: const Offset(0, 8),
           )
         ],
       ),
@@ -77,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: color,
           foregroundColor: Colors.white,
           elevation: 0,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          textStyle: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, letterSpacing: 0.5),
         ),
         onPressed: onTap,
         child: Text(title),
