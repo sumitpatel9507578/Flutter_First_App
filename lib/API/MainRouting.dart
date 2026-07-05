@@ -19,45 +19,40 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         centerTitle: true,
         backgroundColor: Colors.blue[800],
-        title: const Text(
-          "Management Portal",
+        title:  Text(
+          "Manage Employees Data",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      drawer: const Drawer(),
+      drawer:  Drawer(),
       body: Column(
         children: [
           // Header Section
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(bottom: 30, left: 20, right: 20, top: 10),
+            padding:  EdgeInsets.only(bottom: 30, left: 20, right: 20, top: 10),
             decoration: BoxDecoration(
               color: Colors.blue[800],
-              borderRadius: const BorderRadius.only(
+              borderRadius:  BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
               ),
             ),
             child: Column(
               children: [
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.admin_panel_settings, size: 50, color: Colors.blue),
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  "Welcome, Admin",
+
+                 Text(
+                  "Welcome, Sumit Patel",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
+                 Text(
                   "Manage your employees and records",
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
@@ -65,12 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          const SizedBox(height: 30),
+           SizedBox(height: 30),
 
           // Action Buttons Section
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding:  EdgeInsets.symmetric(horizontal: 20),
               children: [
                 _buildMenuCard(
                   context,
@@ -78,25 +73,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: "View and manage all employees",
                   icon: Icons.people_alt_rounded,
                   color: Colors.blue[700]!,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const PostScreen())),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  PostScreen())),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 _buildMenuCard(
                   context,
                   title: "Single Employee Details",
                   subtitle: "Search and view a specific employee",
                   icon: Icons.person_search_rounded,
                   color: Colors.indigo[700]!,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const Singleemployee())),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  Singleemployee())),
                 ),
-                const SizedBox(height: 15),
+                 SizedBox(height: 15),
                 _buildMenuCard(
                   context,
                   title: "Add New Employee",
                   subtitle: "Register a new employee to system",
                   icon: Icons.person_add_alt_1_rounded,
                   color: Colors.teal[700]!,
-                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const AddEmployee())),
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddEmployee())),
                 ),
               ],
             ),
