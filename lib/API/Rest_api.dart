@@ -246,27 +246,34 @@ class Data {
 }
 
 class User {
+  final int empId;
   final String empName;
   final String? empEmail;
   final String empPhone;
   final String? empDepartment;
   final String? empSalary;
+  final String? empHire;
 
   User({
+    required this.empId,
     required this.empName,
     required this.empEmail,
     required this.empPhone,
-    this.empDepartment,
+    required this.empDepartment,
     required this.empSalary,
+    required this.empHire,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
+      empId: json["emp_id"] ?? 0,
       empName: json["emp_name"] ?? "",
       empEmail: json["emp_email"],
       empPhone: json["emp_phone"] ?? "",
       empDepartment: json["emp_department"],
       empSalary: json["emp_salary"] ?? 0,
+      empHire: json["hire_date"] ?? "",
     );
   }
+
 }

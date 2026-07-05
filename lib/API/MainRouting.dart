@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'AllFieldUpdate.dart';
 import 'Post_Screen.dart';
+import 'SingleFieldupdate.dart';
 import 'add_Employee.dart';
 import 'singleEmployee.dart';
 
@@ -32,6 +34,39 @@ class _HomeScreenState extends State<HomeScreen> {
               width: 300,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
+                  colors: [Colors.blueAccent,Colors.blue,Colors.purple],
+                  stops: [
+                    0.2,
+                    0.5,
+                    0.9,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(3, 3),
+                  )
+                ],
+              ),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => PostScreen()));
+                  },
+                  child: Text("All Employee", style: TextStyle(color: Colors.white))),
+            ),
+
+            SizedBox(height: 10),
+            Container(
+              height: 50,
+              width: 300,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
 
                   colors: [Colors.blueAccent,Colors.blue,Colors.purple],
                   stops: [
@@ -52,33 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => PostScreen()));
-                  },
-                  child: Text("All Employee", style: TextStyle(color: Colors.white))),
-            ),
-
-            SizedBox(height: 10),
-            Container(
-              height: 50,
-              width: 300,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(4),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(3, 3),
-                  )
-                ],
-              ),
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Colors.transparent,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4))),
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => Singleemployee()));
@@ -118,7 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee()));
                   },
                   child: Text("Add Employee", style: TextStyle(color: Colors.white))),
+
             ),
+
+
           ],
         ),
       ),

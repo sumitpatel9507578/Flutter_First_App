@@ -102,6 +102,7 @@ class RestApiHelper {
     required String phone,
     required String department,
     required String salary,
+    required String hireDate,
   }) async {
 
     final response = await http.post(
@@ -113,6 +114,7 @@ class RestApiHelper {
         "emp_phone": phone,
         "emp_department": department,
         "emp_salary": salary,
+        "hire_date": hireDate,
       }),
     );
 
@@ -125,5 +127,34 @@ class RestApiHelper {
     } else {
       throw Exception(json["message"] ?? "Error");
     }
+  }
+  Future<void> deleteEmployeeById(int id)async{
+    final response=await http.delete(Uri.parse("$_baseUrl/$id"));
+    if(response.statusCode==200){
+      print("Employee Deleted Successfully : ${response.body}");
+    }
+    else{
+      print("Employee Not Deleted ${response.body}");
+    }
+
+  }
+  Future<void> updateEmployee(
+      int id,
+      Map<String, dynamic> body,
+      ) async {
+    print("ID: $id");
+    print("URL: $_baseUrl/employees/$id");
+    print("BODY: ${jsonEncode(body)}");
+
+    final response = await http.put(
+      Uri.parse("$_baseUrl/$id"),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(body),
+    );
+
+    print("Status Code: ${response.statusCode} ==============================================");
+    print("Response: ${response.body} =======================================================");
   }
 }

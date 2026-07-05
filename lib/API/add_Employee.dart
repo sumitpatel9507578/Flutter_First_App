@@ -16,6 +16,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   final phoneController = TextEditingController();
   final deptController = TextEditingController();
   final salaryController = TextEditingController();
+  final hiredateController=TextEditingController();
   final api = RestApiHelper();
 
   void submitData() async {
@@ -26,10 +27,11 @@ class _AddEmployeeState extends State<AddEmployee> {
         phone: phoneController.text,
         department: deptController.text,
         salary: salaryController.text,
+        hireDate: hiredateController.text,
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Employee Added Successfully")),
+         SnackBar(content: Text("Employee Added Successfully")),
       );
 
       nameController.clear();
@@ -37,6 +39,7 @@ class _AddEmployeeState extends State<AddEmployee> {
       phoneController.clear();
       deptController.clear();
       salaryController.clear();
+      hiredateController.clear();
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,6 +67,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                TextField(controller: phoneController,keyboardType: .number, decoration:  InputDecoration(labelText: "Phone")),
                TextField(controller: deptController, decoration:  InputDecoration(labelText: "Department")),
                TextField(controller: salaryController,keyboardType: .number, decoration:  InputDecoration(labelText: "Salary")),
+               TextField(controller: hiredateController,keyboardType: .datetime, decoration:  InputDecoration(labelText: "Hire Date")),
                SizedBox(height: 20,),
                Container(
                  height: 50,
@@ -84,6 +88,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                        phone: phoneController.text,
                        department: deptController.text,
                        salary: salaryController.text,
+                       hireDate: hiredateController.text,
                      );
 
                      showDialog(
@@ -101,6 +106,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                Text("Phone: ${phoneController.text}"),
                                Text("Department: ${deptController.text}"),
                                Text("Salary: ${salaryController.text}"),
+                               Text("Hire Date: ${hiredateController.text}")
                              ],
                            ),
                            actions: [

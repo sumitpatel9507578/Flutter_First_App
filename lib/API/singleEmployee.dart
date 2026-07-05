@@ -75,7 +75,7 @@ class _SingleemployeeState extends State<Singleemployee> {
                      context: context,
                      builder: (context) {
                        return AlertDialog(
-                         title:  Text("Employee Details"),
+                         title:  Text("Employee Details",style: TextStyle(color: Colors.blue,fontWeight: .bold),),
                          content: Column(
                            mainAxisSize: MainAxisSize.min,
                            crossAxisAlignment: CrossAxisAlignment.start,
