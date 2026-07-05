@@ -38,10 +38,10 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme:  IconThemeData(color: Colors.white),
         centerTitle: true,
         backgroundColor: theme.primaryColor,
-        title: const Text(
+        title:  Text(
           "Edit Employee",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
@@ -59,7 +59,7 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
                   bottomRight: Radius.circular(30),
                 ),
               ),
-              child: const Column(
+              child:  Column(
                 children: [
                   CircleAvatar(
                     radius: 40,
@@ -70,12 +70,12 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding:  EdgeInsets.all(20.0),
               child: Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding:  EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       _buildTextField(
@@ -83,21 +83,21 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
                         label: "Full Name",
                         icon: Icons.person_outline,
                       ),
-                      const SizedBox(height: 15),
+                       SizedBox(height: 15),
                       _buildTextField(
                         controller: emailController,
                         label: "Email Address",
                         icon: Icons.email_outlined,
                         keyboardType: TextInputType.emailAddress,
                       ),
-                      const SizedBox(height: 15),
+                       SizedBox(height: 15),
                       _buildTextField(
                         controller: phoneController,
                         label: "Phone Number",
                         icon: Icons.phone_android_outlined,
                         keyboardType: TextInputType.phone,
                       ),
-                      const SizedBox(height: 15),
+                       SizedBox(height: 15),
                       _buildTextField(
                         controller: departmentController,
                         label: "Department",
@@ -110,14 +110,14 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
                         icon: Icons.currency_rupee_outlined,
                         keyboardType: TextInputType.number,
                       ),
-                      const SizedBox(height: 15),
+                       SizedBox(height: 15),
                       _buildTextField(
                         controller: hiredateController,
                         label: "Hire Date",
                         icon: Icons.calendar_month_outlined,
                         keyboardType: TextInputType.datetime,
                       ),
-                      const SizedBox(height: 30),
+                       SizedBox(height: 30),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -144,12 +144,12 @@ class _EditEmployeeScreen extends State<EditEmployeeScreen> {
                             );
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Profile Updated Successfully!")),
+                               SnackBar(content: Text("Profile Updated Successfully!")),
                             );
 
                             Navigator.pop(context, true);
                           },
-                          child: const Text(
+                          child:  Text(
                             "UPDATE DETAILS",
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
